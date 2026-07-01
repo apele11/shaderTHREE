@@ -47,10 +47,18 @@ export const initEngine = async () => {
   const renderPass = new RenderPass(scene, camera)
   composer.addPass(renderPass)
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const isEmbed = urlParams.get('embed') === 'true';
+
   stats = Stats()
-  document.body.appendChild(stats.dom)
+  if (!isEmbed) {
+    document.body.appendChild(stats.dom)
+  }
 
   gui = new GUI()
+  if (isEmbed) {
+    gui.hide()
+  }
 
   controls = new OrbitControls(camera, renderer.domElement)
   controls.enableDamping = true
