@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { addPass, useCamera, useGui, useRenderSize, useScene, useTick } from './render/init.js'
+import { addPass, useCamera, useGui, useRenderSize, useRenderer, useScene, useTick } from './render/init.js'
 // import postprocessing passes
 import { SavePass } from 'three/examples/jsm/postprocessing/SavePass.js'
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
@@ -8,7 +8,6 @@ import { CopyShader } from 'three/examples/jsm/shaders/CopyShader.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
 
 import vertexShader from './shaders/vertex.glsl'
-import fragmentShader from './shaders/fragment.glsl'
 
 import vertexPars from './shaders/vertex_pars.glsl'
 import vertexMain from './shaders/vertex_main.glsl'
@@ -18,11 +17,17 @@ import fragmentMain from './shaders/fragment_main.glsl'
 const startApp = () => {
   const scene = useScene()
   const camera = useCamera()
+  const renderer = useRenderer()
   const gui = useGui()
   const { width, height } = useRenderSize()
 
   // settings
   const MOTION_BLUR_AMOUNT = 0.725
+  const worldSettings = {
+    backgroundColor: '#3e1ac1',
+  }
+
+  renderer.setClearColor(worldSettings.backgroundColor)
 
   // lighting
   const dirLight = new THREE.DirectionalLight('#526cff', 0.6)
@@ -87,6 +92,15 @@ const startApp = () => {
   const cameraFolder = gui.addFolder('Camera')
   cameraFolder.add(camera.position, 'z', 0, 10)
   cameraFolder.open()
+
+  const worldFolder = gui.addFolder('World')
+  worldFolder
+    .addColor(worldSettings, 'backgroundColor')
+    .name('Background')
+    .onChange((value) => {
+      renderer.setClearColor(value)
+    })
+  worldFolder.open()
 
   // postprocessing
   const renderTargetParameters = {
