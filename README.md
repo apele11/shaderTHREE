@@ -1,5 +1,8 @@
 # ShaderTHREE - Shaders Crash Course
 
+<img width="599" height="678" alt="image" src="https://github.com/user-attachments/assets/62a4d04e-4cc1-42eb-9f1c-581cf3e1a877" />
+
+
 This project is a WebGL shader project built using Three.js and Webpack.
 
 ## Getting Started
